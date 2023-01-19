@@ -61,7 +61,7 @@ resource "aws_security_group" "my-sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
+  # Allow all tcp traffic inside of the security group
   ingress {
     from_port   = 0
     to_port     = 65535
