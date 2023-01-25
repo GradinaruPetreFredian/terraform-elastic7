@@ -45,6 +45,8 @@ resource "aws_instance" "elk1" {
 #! /bin/bash
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum update
+sed -i 's/SELINUX=disabled/SELINUX=permissive/' /etc/selinux/config
+reboot now
 EOF
 
   tags = merge(
@@ -66,6 +68,8 @@ resource "aws_instance" "elk2" {
 #! /bin/bash
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum update
+sed -i 's/SELINUX=disabled/SELINUX=permissive/' /etc/selinux/config
+reboot now
 EOF
   tags = merge(
     local.common_tags,
@@ -85,6 +89,8 @@ resource "aws_instance" "elk3" {
 #! /bin/bash
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum update
+sed -i 's/SELINUX=disabled/SELINUX=permissive/' /etc/selinux/config
+reboot now
 EOF
   tags = merge(
     local.common_tags,
@@ -105,8 +111,6 @@ resource "aws_instance" "apache-ec2" {
   user_data = <<EOF
 #! /bin/bash
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install ansible
-ansible-galaxy collection install ansible.posix
 EOF
 
   tags = merge(
@@ -128,8 +132,6 @@ resource "aws_instance" "syslog-ec2" {
   user_data = <<EOF
 #! /bin/bash
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install ansible
-ansible-galaxy collection install ansible.posix
 EOF
 
   tags = merge(
