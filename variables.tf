@@ -44,14 +44,14 @@ variable "map_public_ip_on_launch" {
   default     = true
 }
 
-variable "ansible_instance_type" {
+variable "beats_instance_type" {
   type        = string
-  description = "Type for EC2 Instnace"
+  description = "Type for EC2 Instance"
   default     = "t2.micro"
 }
 
 variable "elk_instance_type" {
   type        = string
-  description = "Type for EC2 Instnace"
+  description = "Type for EC2 Instance"
   default     = "t2.medium"
 }

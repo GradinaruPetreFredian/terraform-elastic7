@@ -10,10 +10,10 @@ data "aws_ssm_parameter" "ami" {
 # RESOURCES
 ##################################################################################
 
-# INSTANCES #
+# ANSIBLE INSTANCE #
 resource "aws_instance" "ansible" {
   ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
-  instance_type          = var.ansible_instance_type
+  instance_type          = var.beats_instance_type
   subnet_id              = aws_subnet.my-subnet.id
   vpc_security_group_ids = [aws_security_group.my-sg.id]
   key_name               = "ptd-am-petre.gradinaru-key"
@@ -33,6 +33,7 @@ EOF
   )
 }
 
+# ELK INSTANCES #
 resource "aws_instance" "elk1" {
   ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
   instance_type          = var.elk_instance_type
@@ -89,6 +90,52 @@ EOF
     local.common_tags,
     {
       Name = "elk3"
+    },
+  )
+}
+
+# BEATS INSTANCES #
+resource "aws_instance" "apache-ec2" {
+  ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
+  instance_type          = var.beats_instance_type
+  subnet_id              = aws_subnet.my-subnet.id
+  vpc_security_group_ids = [aws_security_group.my-sg.id]
+  key_name               = "ptd-am-petre.gradinaru-key"
+
+  user_data = <<EOF
+#! /bin/bash
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install ansible
+ansible-galaxy collection install ansible.posix
+EOF
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "apache-ec2"
+    },
+  )
+}
+
+
+resource "aws_instance" "syslog-ec2" {
+  ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
+  instance_type          = var.beats_instance_type
+  subnet_id              = aws_subnet.my-subnet.id
+  vpc_security_group_ids = [aws_security_group.my-sg.id]
+  key_name               = "ptd-am-petre.gradinaru-key"
+
+  user_data = <<EOF
+#! /bin/bash
+yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install ansible
+ansible-galaxy collection install ansible.posix
+EOF
+
+  tags = merge(
+    local.common_tags,
+    {
+      Name = "syslog-ec2"
     },
   )
 }
