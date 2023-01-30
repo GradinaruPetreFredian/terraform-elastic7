@@ -21,8 +21,6 @@ resource "aws_instance" "ansible" {
   user_data = <<EOF
 #! /bin/bash
 yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-yum install ansible
-ansible-galaxy collection install ansible.posix
 EOF
 
   tags = merge(
