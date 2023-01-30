@@ -22,8 +22,3 @@ output "apache-ec2_private_dns" {
   description = "The public DNS name assigned to the instance. For EC2-VPC, this is only available if you've enabled DNS hostnames for your VPC"
   value       = aws_instance.apache-ec2.private_dns
 }
-
-output "syslog-ec2_private_dns" {
-  description = "The public DNS name assigned to the instance. For EC2-VPC, this is only available if you've enabled DNS hostnames for your VPC"
-  value       = aws_instance.syslog-ec2.private_dns
-}

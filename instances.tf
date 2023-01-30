@@ -120,24 +120,3 @@ EOF
     },
   )
 }
-
-
-resource "aws_instance" "syslog-ec2" {
-  ami                    = nonsensitive(data.aws_ssm_parameter.ami.value)
-  instance_type          = var.beats_instance_type
-  subnet_id              = aws_subnet.my-subnet.id
-  vpc_security_group_ids = [aws_security_group.my-sg.id]
-  key_name               = "ptd-am-petre.gradinaru-key"
-
-  user_data = <<EOF
-#! /bin/bash
-yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-EOF
-
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "syslog-ec2"
-    },
-  )
-}
